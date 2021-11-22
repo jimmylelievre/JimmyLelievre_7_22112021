@@ -209,7 +209,7 @@ function handleSearch(search) {
   for (let i = 0; i < ingredientResult.flat().length; i++) {
     searchIngredient.push(ingredientResult.flat()[i].ingredient.toLowerCase());
   }
-  console.log("ingredient", searchUstensil);
+  /* console.log("ingredient", searchUstensil); */
   ingredientDisplay(searchIngredient);
   appareilDisplay(appareilResult);
   ustensileDisplay(searchUstensil);
@@ -302,13 +302,27 @@ inputIngredient.addEventListener("input", (e) => {
 });
 
 inputAppareil.addEventListener("input", (e) => {
+  let appareil = [];
   let resultInput = e.target.value.toLowerCase();
-  appareilDisplay(resultInput);
+  if (resultInput) {
+    appareil = recipes
+      .map((recipe) => recipe.appliance.toLowerCase())
+      .filter((recipe) => recipe.includes(resultInput));
+    appareilDisplay(appareil);
+  }
 });
 
 inputUstensile.addEventListener("input", (e) => {
+  let ustensil = [];
   let resultInput = e.target.value.toLowerCase();
-  ustensileDisplay(resultInput);
+  if (resultInput) {
+    ustensil = recipes
+      .map((recipe) => recipe.ustensils)
+      .flat()
+      .map((ustensils) => ustensils.toLowerCase())
+      .filter((ustensil) => ustensil.includes(resultInput));
+    ustensileDisplay(ustensil);
+  }
 });
 
 // Ouverture  et fermetures des fenetres recherches avancées

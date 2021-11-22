@@ -18,17 +18,26 @@ function filterSearch(recipe, search) {
       return true;
     }
   }
-  let searchName = recipe.name.toLowerCase().includes(search.toLowerCase());
+  /* recipe.ingredients.map((element) => {
+    searchIngredient = element.ingredient
+      .toLowerCase()
+      .includes(search.toLowerCase());
+  });
+  if (searchIngredient) {
+    return true;
+  } */
+
+  /* let searchName = recipe.name.toLowerCase().includes(search.toLowerCase());
   let searchDescription = recipe.description
     .toLowerCase()
     .includes(search.toLowerCase());
 
   if (searchName) {
-    return true;
+    return false;
   }
   if (searchDescription) {
-    return true;
-  }
+    return false;
+  } */
 }
 
 //Apparition des recettes
