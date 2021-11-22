@@ -1,0 +1,315 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
+
+html {
+  --line-h: 18px;
+  --nth-lines-description: 5;
+}
+* {
+  box-sizing: border-box;
+  /* Opera/IE 8+ */
+  -moz-box-sizing: border-box;
+  /* Firefox, autres Gecko */
+  -webkit-box-sizing: border-box;
+  /* Safari/Chrome, autres WebKit */
+  margin: 0;
+  font-family: "Lato", sans-serif;
+}
+header {
+  width: 100%;
+  text-align: center;
+  margin-top: 88px;
+  margin-bottom: 17px;
+}
+.logo {
+  width: 268px;
+  height: 93px;
+}
+main {
+  margin-right: 100px;
+  margin-left: 100px;
+}
+.search {
+  position: relative;
+  margin-bottom: 35px;
+}
+.search-input {
+  width: 100%;
+  padding: 23px;
+  border-radius: 5px;
+  background: #e7e7e7;
+  border: 0px;
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+}
+.search-input::placeholder {
+  color: grey;
+}
+.fa-search {
+  position: absolute;
+  top: 19px;
+  right: 16px;
+  font-size: 25px;
+}
+.tag-container {
+  display: flex;
+}
+.tag {
+  display: flex;
+  align-items: center;
+  height: 37px;
+  background: #3282f7;
+  border-radius: 5px;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 15px;
+  margin-right: 10px;
+  padding: 20px;
+  cursor: pointer;
+}
+.fa-times-circle {
+  margin-left: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.filter {
+  display: flex;
+  height: 100px;
+}
+
+.ingredient {
+  text-align: left;
+  width: 170px;
+  height: 69px;
+  background: #3282f7;
+  border-radius: 5px;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 25px;
+  margin-right: 20px;
+  font-size: 18px;
+  padding-left: 15px;
+}
+.advanced-search {
+  position: absolute;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  width: 170px;
+  height: 69px;
+  background: #3282f7;
+  border-radius: 5px;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 25px;
+  margin-right: 20px;
+  font-size: 18px;
+  padding-left: 15px;
+  cursor: pointer;
+}
+
+.appareil {
+  background: #68d9a4;
+}
+.ustensiles {
+  background: #ed6454;
+}
+.with-input {
+  width: 500px;
+  margin-bottom: 0;
+}
+.menu-ingredient {
+  visibility: hidden;
+  width: 667px;
+  height: 330px;
+  background: #3282f7;
+  border-radius: 5px;
+  margin-right: 20px;
+  position: absolute;
+  overflow: hidden;
+  z-index: 40;
+}
+.menu-ingredient ul {
+  font-size: 18px;
+  line-height: 25px;
+  list-style: none;
+  color: white;
+  padding-left: 19px;
+  cursor: pointer;
+}
+.ul-ingredient {
+  display: flex;
+  width: 200px;
+  padding-right: 19px;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 250px;
+}
+.ul {
+  display: flex;
+  width: 200px;
+  padding-right: 19px;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 250px;
+  font-size: 18px;
+  line-height: 25px;
+  list-style: none;
+  color: white;
+  padding-left: 19px;
+  cursor: pointer;
+}
+
+.list-ingredient li {
+  list-style: none;
+  color: white;
+  margin-left: 19px;
+  margin-right: 19px;
+  width: 180px;
+}
+li::first-letter {
+  text-transform: uppercase;
+}
+::placeholder {
+  color: white;
+  text-align: left;
+}
+input {
+  border: 0;
+  outline: none;
+}
+.menu {
+  visibility: hidden;
+}
+.visible {
+  visibility: visible;
+}
+.menu-appareil {
+  visibility: hidden;
+  width: 667px;
+  height: 330px;
+  background: #3282f7;
+  border-radius: 5px;
+  margin-right: 20px;
+  position: absolute;
+  overflow: hidden;
+  z-index: 40;
+  background: #68d9a4;
+}
+.menu-ustensile {
+  visibility: hidden;
+  width: 667px;
+  height: 330px;
+  background: #3282f7;
+  border-radius: 5px;
+  margin-right: 20px;
+  position: absolute;
+  overflow: hidden;
+  z-index: 40;
+  background: #ed6454;
+}
+
+.searchUstensiles {
+  position: relative;
+}
+.button-appareil {
+  left: 200px;
+}
+.button-ustencile {
+  left: 400px;
+}
+
+.fa-chevron-down {
+  position: absolute;
+  top: 25px;
+  right: 20px;
+  color: white;
+  cursor: pointer;
+}
+.fa-chevron-up {
+  position: absolute;
+  top: 25px;
+  right: 20px;
+  color: white;
+  cursor: pointer;
+}
+.color-one {
+  background: #68d9a4;
+}
+.color-two {
+  background: #ed6454;
+}
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+.recipe {
+  width: 380px;
+  height: 364px;
+  background: #e7e7e7;
+  border-radius: 5px;
+}
+.card-image {
+  width: 380px;
+  height: 178px;
+  background: #c7bebe;
+  border-radius: 5px 5px 0px 0px;
+}
+.card-recipe {
+  height: 186px;
+  padding: 20px;
+}
+.title-recipe {
+  display: flex;
+  font-size: 18px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+.title-recipe h2 {
+  font-weight: 400;
+  font-size: 15px;
+}
+.title-recipe p {
+  font-weight: 700;
+  font-size: 18px;
+  width: 150px;
+  text-align: right;
+}
+.fa-clock {
+  margin-right: 7px;
+  font-size: 18px;
+}
+.description-recipe {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  list-style-type: none;
+}
+.description-recipe ul {
+  padding: 0;
+  width: 171px;
+  padding-right: 10px;
+  list-style: none;
+}
+.description {
+  line-height: var(--line-h);
+  max-height: calc(var(--line-h) * var(--nth-lines-description));
+  text-align: justify;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 171px;
+  height: 100px;
+  position: relative;
+  padding-right: 10px;
+}
+.description::after {
+  content: "...";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les petits plats</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <header>
+        <img class="logo" src="/images/logo.png" alt="Logo">
+        
+    </header>
+    <main>
+        <!-- Section recherche -->
+        <div class="search">
+            <i class="fas fa-search"></i>
+            <input class="search-input" type="text" placeholder="Rechercher un ingrédient, appareil, ustensiles ou une recette">
+        </div>
+
+        <!-- Filtres -->
+        <div>
+            
+            <div class="tag-container"></div>
+
+            <div class="filter">
+                <div class="searchUstensiles">
+                    <div class="advanced-search">
+                        <i class="fas fa-chevron-down"></i>
+                        Ingredient
+                    </div>
+                    
+                   
+                    
+                   
+                    <div class="menu-ingredient menu"> 
+                       
+                        <input class="ingredient input-ingredient " type="text" placeholder="Recherche un ingrédient">
+                        <div class="list-ingredient" > 
+
+                            <ul class="ul-ingredient"></ul>
+                           
+                        </div>
+                        <i class="fas fa-chevron-up"></i>
+                    </div>
+                </div>
+                <div class="searchUstensiles button-appareil">
+                    <div class="advanced-search appareil">
+                        <i class="fas fa-chevron-down"></i>
+                        Appareil
+                    </div>
+                    <div class="menu-appareil menu"> 
+                       
+                        <input class="ingredient input-appareil color-one " type="text" placeholder="Recherche un appareil">
+                        <div class="list-ingredient list-appareil" > 
+
+                            <ul class="ul-appareil ul"></ul>
+                           
+                        </div>
+                        <i class="fas fa-chevron-up"></i>
+                    </div>
+                </div>
+                
+                <div class="searchUstensiles button-ustencile ">
+                    <div class="advanced-search ustensiles">
+                        <i class="fas fa-chevron-down"></i>
+                        Ustensiles
+                    </div>
+                    <div class="menu-ustensile menu"> 
+                       
+                        <input class="ingredient input-ustensile color-two " type="text" placeholder="Recherche un ustensile">
+                        <div class="list-ingredient list-ustensile" > 
+
+                            <ul class="ul-ustensile ul"></ul>
+                           
+                        </div>
+                        <i class="fas fa-chevron-up"></i>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Section apparition recettes -->
+
+        <div class="cards"></div>
+        <!-- <section class="recipe">
+            <div class="card-image"></div>
+            <div class="card-recipe">
+                <div class="title-recipe">
+
+                    <h2>Limonade de coco</h2>
+                    
+                    <p><i class="far fa-clock"></i>10 min</p>
+                </div>
+                <div class="description-recipe">
+                    
+                    <li>
+                        <ul>lait de coco : 400ml</ul>
+                        <ul>lait de coco : 400ml</ul>
+                        <ul>lait de coco : 400ml</ul>
+                    </li>
+                    <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, aspernatur!</p>
+                </div>
+            </div>
+            
+            
+            
+        </section> -->
+    </main>
+    <script src="/src/recipes.js"></script>
+    <script src="/src/advancedSearch.js"></script>
+    <script src="/src/index.js"></script>
+
+    
+    <script src="https://kit.fontawesome.com/e6ece1fded.js" crossorigin="anonymous"></script>
+</body>
+</html>
