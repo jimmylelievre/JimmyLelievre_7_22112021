@@ -1,5 +1,5 @@
 //DOM
-const cards = document.querySelector(".cards");
+const cards = document.querySelector(".cards-container");
 
 const input = document.querySelector(".search-input");
 
@@ -9,35 +9,31 @@ const menuUstensile = document.querySelector(".menu-ustensile");
 const menus = document.querySelector(".menu");
 
 function filterSearch(recipe, search) {
-  let searchIngredient;
-  for (i = 0; i < recipe.ingredients.length; i++) {
-    searchIngredient = recipe.ingredients[i].ingredient
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    if (searchIngredient) {
-      return true;
-    }
-  }
-  /* recipe.ingredients.map((element) => {
-    searchIngredient = element.ingredient
-      .toLowerCase()
-      .includes(search.toLowerCase());
-  });
-  if (searchIngredient) {
-    return true;
-  } */
-
-  /* let searchName = recipe.name.toLowerCase().includes(search.toLowerCase());
+  let searchName = recipe.name.toLowerCase().includes(search.toLowerCase());
   let searchDescription = recipe.description
     .toLowerCase()
     .includes(search.toLowerCase());
 
+  let i;
+  recipe.ingredients.map((element) => {
+    searchIngredient = element.ingredient
+      .toLowerCase()
+      .includes(search.toLowerCase());
+    if (searchIngredient) {
+      i = true;
+    }
+  });
+
+  if (i) {
+    return true;
+  }
   if (searchName) {
-    return false;
+    return true;
   }
   if (searchDescription) {
-    return false;
-  } */
+    return true;
+  }
+  /* console.log(searchIngredient); */
 }
 
 //Apparition des recettes
@@ -47,7 +43,23 @@ function recipeDisplay(search) {
     .map((recipe) => {
       let ingredients = [];
 
-      for (i = 0; i < recipe.ingredients.length; i++) {
+      recipe.ingredients.forEach((ingredient) => {
+        let eachIngredient = ingredient.ingredient;
+        let quantity = ingredient.quantity;
+        let unit = ingredient.unit;
+
+        if (unit == undefined) {
+          unit = "";
+        }
+        if (quantity == undefined) {
+          quantity = "";
+        }
+        ingredients.push(
+          `<li><strong>${eachIngredient}:</strong> ${quantity} ${unit}</li>`
+        );
+      });
+
+      /* for (i = 0; i < recipe.ingredients.length; i++) {
         let ingredient = recipe.ingredients[i].ingredient;
         let quantity = recipe.ingredients[i].quantity;
         let unit = recipe.ingredients[i].unit;
@@ -61,7 +73,7 @@ function recipeDisplay(search) {
         ingredients.push(
           `<li><strong>${ingredient}:</strong> ${quantity} ${unit}</li>`
         );
-      }
+      } */
       return `
             
             <div class="cards">

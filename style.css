@@ -240,11 +240,17 @@ input {
 .color-two {
   background: #ed6454;
 }
-.cards {
+
+.cards-container {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   margin-bottom: 50px;
+}
+.cards {
+  margin-bottom: 20px;
+  flex-grow: 1;
 }
 .recipe {
   width: 380px;
