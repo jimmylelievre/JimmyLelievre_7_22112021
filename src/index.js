@@ -1,4 +1,5 @@
 //DOM
+
 const cards = document.querySelector(".cards-container");
 
 const input = document.querySelector(".search-input");
@@ -59,21 +60,6 @@ function recipeDisplay(search) {
         );
       });
 
-      /* for (i = 0; i < recipe.ingredients.length; i++) {
-        let ingredient = recipe.ingredients[i].ingredient;
-        let quantity = recipe.ingredients[i].quantity;
-        let unit = recipe.ingredients[i].unit;
-
-        if (unit == undefined) {
-          unit = "";
-        }
-        if (quantity == undefined) {
-          quantity = "";
-        }
-        ingredients.push(
-          `<li><strong>${ingredient}:</strong> ${quantity} ${unit}</li>`
-        );
-      } */
       return `
             
             <div class="cards">
@@ -116,6 +102,7 @@ input.addEventListener("input", (e) => {
       if (searchInput != "") {
         recipeList.push(recipeDisplay(searchInput));
         console.log(searchInput);
+        handleSearch(searchInput);
       }
     });
     console.log("recipe list", recipeList.flat().length);
@@ -132,5 +119,4 @@ input.addEventListener("input", (e) => {
   if (resultInput == "") {
     cards.innerHTML = "";
   }
-  handleSearch(resultInput);
 });
