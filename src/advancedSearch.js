@@ -32,7 +32,6 @@ function handleSearch(search) {
 }
 
 function displayRecipes(recipes) {
-  console.log(recipes);
   let recipeHtmlList = recipes.map((recipe) => {
     let ingredients = [];
 
@@ -94,7 +93,6 @@ function ingredientRecipeDisplay(search) {
     })
     .reduce((acc, recipe) => {
       let result = acc.find((item) => item.id == recipe.id);
-      console.log(result, recipe.name, acc);
 
       if (result == undefined) {
         acc.push(recipe);
@@ -148,28 +146,6 @@ function ustensilRecipeDisplay(search) {
 }
 
 // Affichage des ingredients sans les doublons dans la fenetre recherche avancée
-function ingredientDisplay(search = null) {
-  let uniqueIgredient = [];
-  console.log(search);
-  if (search == null) {
-    let ing = [];
-    recipes.map((recipe) => {
-      for (i = 0; i < recipe.ingredients.length; i++) {
-        let ingredient = recipe.ingredients[i].ingredient.toLowerCase();
-        ing.push(ingredient);
-      }
-    });
-
-    uniqueIgredient = [...new Set(ing)];
-
-    uniqueIgredient.splice(30);
-    listIngredient.innerHTML = displayIngredientHtml(uniqueIgredient);
-  } else {
-    uniqueIgredient = [...new Set(search)];
-    listIngredient.innerHTML = displayIngredientHtml(uniqueIgredient);
-  }
-}
-ingredientDisplay();
 
 function displayIngredientHtml(uniqueIgredient) {
   return uniqueIgredient
@@ -203,9 +179,32 @@ function displayUstensilHtml(uniqueUstensil) {
     .join("");
 }
 
+function ingredientDisplay(search = null) {
+  let uniqueIgredient = [];
+
+  if (search == null) {
+    let ing = [];
+    recipes.map((recipe) => {
+      for (i = 0; i < recipe.ingredients.length; i++) {
+        let ingredient = recipe.ingredients[i].ingredient.toLowerCase();
+        ing.push(ingredient);
+      }
+    });
+
+    uniqueIgredient = [...new Set(ing)];
+
+    uniqueIgredient.splice(30);
+    listIngredient.innerHTML = displayIngredientHtml(uniqueIgredient);
+  } else {
+    uniqueIgredient = [...new Set(search)];
+    listIngredient.innerHTML = displayIngredientHtml(uniqueIgredient);
+  }
+}
+ingredientDisplay();
+
 function appareilDisplay(search = null) {
   let uniqueAppareil = [];
-  console.log(search);
+
   if (search == null) {
     let appareil = [];
     recipes.map((recipe) => {
@@ -230,8 +229,6 @@ function ustensileDisplay(search = null) {
     let ustensil = [];
     recipes.map((recipe) => ustensil.push(recipe.ustensils));
 
-    console.log(ustensil.flat());
-
     uniqueUstensil = [...new Set(ustensil.flat())];
 
     listUstensile.innerHTML = displayUstensilHtml(uniqueUstensil);
@@ -247,7 +244,7 @@ function displayRecipeTagIngredient(tagChoiceList) {
     .map((tagSearchText) => {
       let recipeToDisplay = ingredientRecipeDisplay(tagSearchText);
       handleSearch(tagSearchText);
-      console.log(tagSearchText);
+
       return recipeToDisplay;
     })
     .flat();
@@ -284,7 +281,7 @@ inputIngredient.addEventListener("input", (e) => {
   if (resultInput.length === 0 || resultInput === "") {
     ingredientDisplay();
   }
-  console.log(resultInput);
+
   if (resultInput) {
     ing = recipes
       .map((recipe) => recipe.ingredients)
@@ -334,25 +331,30 @@ listIngredient.addEventListener("click", (e) => {
   displayRecipeTagIngredient(tagChoiceList);
 
   tagContainer.innerHTML += `
+
   
-        <div class="tag">
-          <p>${tagChoice}</p>
-          <i class="far fa-times-circle"></i>          
-        </div>
+      <div id="${tagChoice}" class="tag">
+        <p id="${tagChoice}"  >${tagChoice}</p>
+        <i id="${tagChoice}"  class="far fa-times-circle"></i>          
+      </div>   
+      
+
+        
     `;
   // remove tag a chaque clic dessus
   const tag = document.querySelectorAll(".tag");
 
   tag.forEach((tag) => {
     tag.addEventListener("click", (e) => {
-      let myIndex = tagChoiceList.indexOf(e.target.textContent);
+      console.log(e);
+      let myIndex = tagChoiceList.indexOf(e.target.id);
       if (myIndex !== -1) {
         tagChoiceList.splice(myIndex, 1);
       }
 
       displayRecipeTagIngredient(tagChoiceList);
-      tag.innerHTML = "";
-      tag.classList.remove("tag");
+
+      tag.style.display = "none";
     });
   });
 });
@@ -363,24 +365,24 @@ listAppareil.addEventListener("click", (e) => {
 
   displayRecipeTagAppareil(tagChoiceList);
   tagContainer.innerHTML += `
-  
-        <div class="tag color-one">
-          <p>${e.target.textContent}</p>
-          <i class="far fa-times-circle"></i>          
-        </div>
+
+    <div id="${tagChoice}" class="tag color-one">
+      <p id="${tagChoice}"  >${tagChoice}</p>
+      <i id="${tagChoice}"  class="far fa-times-circle"></i>          
+    </div>           
+       
     `;
 
   const tag = document.querySelectorAll(".tag");
   tag.forEach((tag) => {
     tag.addEventListener("click", (e) => {
-      let myIndex = tagChoiceList.indexOf(e.target.textContent);
+      let myIndex = tagChoiceList.indexOf(e.target.id);
       if (myIndex !== -1) {
         tagChoiceList.splice(myIndex, 1);
       }
 
       displayRecipeTagAppareil(tagChoiceList);
-      tag.innerHTML = "";
-      tag.classList.remove("tag");
+      tag.style.display = "none";
     });
   });
 });
@@ -392,23 +394,22 @@ listUstensile.addEventListener("click", (e) => {
   displayRecipeTagUstensil(tagChoiceList);
   tagContainer.innerHTML += `
   
-        <div class="tag color-two">
-          <p>${e.target.textContent}</p>
-          <i class="far fa-times-circle"></i>          
-        </div>
+      <div id="${tagChoice}" class="tag color-two">
+        <p id="${tagChoice}"  >${tagChoice}</p>
+        <i id="${tagChoice}"  class="far fa-times-circle"></i>          
+      </div>   
     `;
 
   const tag = document.querySelectorAll(".tag");
   tag.forEach((tag) => {
     tag.addEventListener("click", (e) => {
-      let myIndex = tagChoiceList.indexOf(e.target.textContent);
+      let myIndex = tagChoiceList.indexOf(e.target.id);
       if (myIndex !== -1) {
         tagChoiceList.splice(myIndex, 1);
       }
 
       displayRecipeTagUstensil(tagChoiceList);
-      tag.innerHTML = "";
-      tag.classList.remove("tag");
+      tag.style.display = "none";
     });
   });
 });
