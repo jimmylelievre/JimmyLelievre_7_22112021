@@ -7,6 +7,11 @@ const listIngredient = document.querySelector(".ul-ingredient");
 const listAppareil = document.querySelector(".ul-appareil");
 const listUstensile = document.querySelector(".ul-ustensile");
 
+const listTagHandler = {
+  "list-ingredient": displayRecipeTagIngredient,
+  "list-appareil": displayRecipeTagAppareil,
+  "list-ustensil": displayRecipeTagUstensil,
+};
 function handleSearch(search) {
   let searchdata = recipes.filter((recipe) => filterSearch(recipe, search));
 
@@ -146,34 +151,12 @@ function ustensilRecipeDisplay(search) {
 }
 
 // Affichage des ingredients sans les doublons dans la fenetre recherche avancée
-
-function displayIngredientHtml(uniqueIgredient) {
+function dipslayElementCuisine(uniqueIgredient, className) {
   return uniqueIgredient
     .map((i) => {
       return `
     
-      <li class="list">${i}</li>
-    `;
-    })
-    .join("");
-}
-function displayAppareilHtml(uniqueAppareil) {
-  return uniqueAppareil
-    .map((i) => {
-      return `
-    
-      <li class="list">${i}</li>
-    `;
-    })
-    .join("");
-}
-
-function displayUstensilHtml(uniqueUstensil) {
-  return uniqueUstensil
-    .map((i) => {
-      return `
-    
-      <li class="list">${i}</li>
+      <li class="${className}">${i}</li>
     `;
     })
     .join("");
@@ -194,11 +177,19 @@ function ingredientDisplay(search = null) {
     uniqueIgredient = [...new Set(ing)];
 
     uniqueIgredient.splice(30);
-    listIngredient.innerHTML = displayIngredientHtml(uniqueIgredient);
+    listIngredient.innerHTML = dipslayElementCuisine(
+      uniqueIgredient,
+      "list-ingredient"
+    );
   } else {
     uniqueIgredient = [...new Set(search)];
-    listIngredient.innerHTML = displayIngredientHtml(uniqueIgredient);
+    listIngredient.innerHTML = dipslayElementCuisine(
+      uniqueIgredient,
+      "list-ingredient"
+    );
   }
+  let callback = listTagHandler["list-ingredient"];
+  addTagAppareilEvent("list-ingredient", callback);
 }
 ingredientDisplay();
 
@@ -213,13 +204,24 @@ function appareilDisplay(search = null) {
 
     uniqueAppareil = [...new Set(appareil)];
 
-    listAppareil.innerHTML = displayAppareilHtml(uniqueAppareil);
+    listAppareil.innerHTML = dipslayElementCuisine(
+      uniqueAppareil,
+      "list-appareil"
+    );
   } else {
     uniqueAppareil = [...new Set(search)];
-    listAppareil.innerHTML = displayAppareilHtml(uniqueAppareil);
+    listAppareil.innerHTML = dipslayElementCuisine(
+      uniqueAppareil,
+      "list-appareil"
+    );
+    let callback = listTagHandler["list-appareil"];
+    addTagAppareilEvent("list-appareil", callback);
   }
 }
+
 appareilDisplay();
+let callback = listTagHandler["list-appareil"];
+addTagAppareilEvent("list-appareil", callback);
 // Affichée les ustensiles dans la fenetre recherche avancé ustensile
 
 function ustensileDisplay(search = null) {
@@ -231,18 +233,26 @@ function ustensileDisplay(search = null) {
 
     uniqueUstensil = [...new Set(ustensil.flat())];
 
-    listUstensile.innerHTML = displayUstensilHtml(uniqueUstensil);
+    listUstensile.innerHTML = dipslayElementCuisine(
+      uniqueUstensil,
+      "list-ustensil"
+    );
   } else {
     uniqueUstensil = [...new Set(search)];
-    listUstensile.innerHTML = displayUstensilHtml(uniqueUstensil);
+    listUstensile.innerHTML = dipslayElementCuisine(
+      uniqueUstensil,
+      "list-ustensil"
+    );
   }
+  let callback = listTagHandler["list-ustensil"];
+  addTagAppareilEvent("list-ustensil", callback);
 }
 ustensileDisplay();
 
-function displayRecipeTagIngredient(tagChoiceList) {
+function displayRecipeTag(tagChoiceList, tagRecipeCallback, className) {
   let tagRecipeList = tagChoiceList
     .map((tagSearchText) => {
-      let recipeToDisplay = ingredientRecipeDisplay(tagSearchText);
+      let recipeToDisplay = tagRecipeCallback(tagSearchText);
       handleSearch(tagSearchText);
 
       return recipeToDisplay;
@@ -250,28 +260,17 @@ function displayRecipeTagIngredient(tagChoiceList) {
     .flat();
   displayRecipes(tagRecipeList);
 }
-function displayRecipeTagAppareil(tagChoiceList) {
-  let tagRecipeList = tagChoiceList
-    .map((tagSearchText) => {
-      let recipeToDisplay = appareilRecipeDisplay(tagSearchText);
-      handleSearch(tagSearchText);
 
-      return recipeToDisplay;
-    })
-    .flat();
-  displayRecipes(tagRecipeList);
+function displayRecipeTagIngredient(tagChoiceList) {
+  displayRecipeTag(tagChoiceList, ingredientRecipeDisplay, "list-ingredient");
+}
+
+function displayRecipeTagAppareil(tagChoiceList) {
+  displayRecipeTag(tagChoiceList, appareilRecipeDisplay, "list-appareil");
 }
 
 function displayRecipeTagUstensil(tagChoiceList) {
-  let tagRecipeList = tagChoiceList
-    .map((tagSearchText) => {
-      let recipeToDisplay = ustensilRecipeDisplay(tagSearchText);
-      handleSearch(tagSearchText);
-
-      return recipeToDisplay;
-    })
-    .flat();
-  displayRecipes(tagRecipeList);
+  displayRecipeTag(tagChoiceList, ustensilRecipeDisplay, "list-ustensil");
 }
 
 // Input recherche avancée ingredient
@@ -324,7 +323,7 @@ inputUstensile.addEventListener("input", (e) => {
 
 // Apparition des tags de chaque recherche avancée
 let tagChoiceList = [];
-listIngredient.addEventListener("click", (e) => {
+/* listIngredient.addEventListener("click", (e) => {
   let tagChoice = e.target.textContent;
   tagChoiceList.push(tagChoice);
 
@@ -333,9 +332,9 @@ listIngredient.addEventListener("click", (e) => {
   tagContainer.innerHTML += `
 
   
-      <div id="${tagChoice}" class="tag">
-        <p id="${tagChoice}"  >${tagChoice}</p>
-        <i id="${tagChoice}"  class="far fa-times-circle"></i>          
+      <div data-id="${tagChoice}" class="tag">
+        <p data-id="${tagChoice}"  >${tagChoice}</p>
+        <i data-id="${tagChoice}"  class="far fa-times-circle"></i>          
       </div>   
       
 
@@ -347,7 +346,7 @@ listIngredient.addEventListener("click", (e) => {
   tag.forEach((tag) => {
     tag.addEventListener("click", (e) => {
       console.log(e);
-      let myIndex = tagChoiceList.indexOf(e.target.id);
+      let myIndex = tagChoiceList.indexOf(e.target.dataset.id);
       if (myIndex !== -1) {
         tagChoiceList.splice(myIndex, 1);
       }
@@ -357,13 +356,17 @@ listIngredient.addEventListener("click", (e) => {
       tag.style.display = "none";
     });
   });
-});
-
-listAppareil.addEventListener("click", (e) => {
+}); */
+function handleTagClick(e, recipeTagCallback) {
   tagChoice = e.target.textContent;
   tagChoiceList.push(tagChoice);
+  console.log("call");
+  /* tagChoiceList = [...new Set(tagChoiceList)]; */
+  console.log(tagChoiceList);
+  /*  let callback = listTagHandler[className]; */
+  recipeTagCallback(tagChoiceList);
+  /*  addTagAppareilEvent(className, callback); */
 
-  displayRecipeTagAppareil(tagChoiceList);
   tagContainer.innerHTML += `
 
     <div id="${tagChoice}" class="tag color-one">
@@ -381,13 +384,28 @@ listAppareil.addEventListener("click", (e) => {
         tagChoiceList.splice(myIndex, 1);
       }
 
-      displayRecipeTagAppareil(tagChoiceList);
+      recipeTagCallback(tagChoiceList);
+
+      /* addTagAppareilEvent(className, callback); */
       tag.style.display = "none";
     });
   });
-});
+}
 
-listUstensile.addEventListener("click", (e) => {
+function addTagAppareilEvent(className, callback) {
+  Array.from(document.getElementsByClassName(className)).forEach((element) => {
+    element.addEventListener(
+      "click",
+      (e) => {
+        handleTagClick(e, callback);
+      },
+      [(once = true)]
+    );
+  });
+}
+/* addTagAppareilEvent("list-ingredient", displayRecipeTagIngredient); */
+
+/* listUstensile.addEventListener("click", (e) => {
   tagChoice = e.target.textContent;
   tagChoiceList.push(tagChoice);
 
@@ -403,6 +421,8 @@ listUstensile.addEventListener("click", (e) => {
   const tag = document.querySelectorAll(".tag");
   tag.forEach((tag) => {
     tag.addEventListener("click", (e) => {
+      e.stopPropagation();
+      console.log(e);
       let myIndex = tagChoiceList.indexOf(e.target.id);
       if (myIndex !== -1) {
         tagChoiceList.splice(myIndex, 1);
@@ -413,3 +433,4 @@ listUstensile.addEventListener("click", (e) => {
     });
   });
 });
+ */

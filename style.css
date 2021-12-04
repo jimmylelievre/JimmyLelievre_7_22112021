@@ -163,7 +163,7 @@ main {
   cursor: pointer;
 }
 
-.list-ingredient li {
+.list-ingredient-container li {
   list-style: none;
   color: white;
   margin-left: 19px;
