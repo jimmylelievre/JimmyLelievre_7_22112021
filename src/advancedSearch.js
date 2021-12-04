@@ -12,6 +12,85 @@ const listTagHandler = {
   "list-appareil": displayRecipeTagAppareil,
   "list-ustensil": displayRecipeTagUstensil,
 };
+let tagChoiceList = [];
+/**
+ * ----------------------------------------------------------------
+ * LES FONCTIONS DE RECUPÉRATIONS DES ELEMENTS DANS LA CUISINE
+ * Ces fonctions ci dessus permettent de récupérer les élements : ustensil, appareil et ingrédient
+ * dans la cuisine.
+ * ----------------------------------------------------------------
+ */
+
+/** 
+  Cette fonction permet de récupération l'ensemble de des ingredients
+*/
+getAllIngredients = () => {
+  let all =  recipes.map((recipe) => recipe.ingredients)
+    .flat()
+    .map((ingredient) => ingredient.ingredient.toLowerCase());  
+  return [...new Set(all)];
+}
+/** 
+  Cette fonction permet de récupération l'ensemble de des ustensil
+*/
+getAllUstensiles = () => {
+  let all =  recipes.map((recipe) => recipe.ustensils)
+    .flat()
+    .map((ustensil) => ustensil.toLowerCase());  
+  return [...new Set(all)];
+}
+
+/** 
+  Cette fonction permet de récupération l'ensemble de des appareils
+*/
+getAllAppareils = () => {
+  let all = recipes.map((recipe) =>  recipe.appliance.toLowerCase());
+  return [...new Set(all)];
+}
+/**
+ * ------------------------------------------------
+ * Cette fonction prend en parametres : 
+ *   - search : la recherche tapé par l'utilisateur elle null quand on vient d'ouvrir le site
+ *   - listContainer : l'element dans laquelle les li généré seront affiché
+ *   - className : la classe de l'élement utilisé par exemple list-ingredient
+ * ------------------------------------------------
+ */
+const getCusineElements = (search = null, listContainer, className, elementCallback) => {
+  let elements = [];
+  let callback = listTagHandler[className];
+  if (search == null) {
+    elements = elementCallback()
+    elements.splice(30);
+  } else {
+    elements = [...new Set(search)];
+  }
+  document.querySelector(listContainer).innerHTML = dipslayElementCuisine(
+    elements,
+    className
+  );
+  addTagElementEvent(className, callback);  
+}
+/**
+ *  Dans ces fonctions on appelle notre fonction getCusineElements
+ * A chaque fois on lui donne lui élement pour récuperer ce qu'on veux ingredients, appareils, ustensils
+ * Ces 3 fonctions définient ci-après serve de rappels pour ne pas appeler getCusineElements à chaque fois avec la liste longue de ses parametre
+ * 
+ */
+const displayIngredients = (search = null) => getCusineElements(search, ".ul-ingredient", "list-ingredient", getAllIngredients);
+const displayAppareils = (search = null) => getCusineElements(search, ".ul-appareil", "list-appareil", getAllAppareils);
+const displayUstensils = (search = null) => getCusineElements(search, ".ul-ustensile","list-ustensil", getAllUstensiles);
+
+/**
+ * La fonction init est la premiere fonction appeler elle permet d'appeler nos fonction de rappels à l'état initial
+ * Elle est aussi appelé après avoir enlevé tous les tags 
+ */
+function init() {
+  displayIngredients()
+  displayAppareils()
+  displayUstensils();
+}
+init()
+
 function handleSearch(search) {
   let searchdata = recipes.filter((recipe) => filterSearch(recipe, search));
 
@@ -30,10 +109,9 @@ function handleSearch(search) {
   for (let i = 0; i < ingredientResult.flat().length; i++) {
     searchIngredient.push(ingredientResult.flat()[i].ingredient.toLowerCase());
   }
-  /* console.log("ingredient", searchUstensil); */
-  ingredientDisplay(searchIngredient);
-  appareilDisplay(appareilResult);
-  ustensileDisplay(searchUstensil);
+  displayIngredients(searchIngredient);
+  displayAppareils(appareilResult);
+  displayUstensils(searchUstensil);
 }
 
 function displayRecipes(recipes) {
@@ -104,8 +182,6 @@ function ingredientRecipeDisplay(search) {
       }
       return acc;
     }, []);
-
-  /* .join(""); */
 }
 
 function appareilRecipeDisplay(search) {
@@ -151,8 +227,8 @@ function ustensilRecipeDisplay(search) {
 }
 
 // Affichage des ingredients sans les doublons dans la fenetre recherche avancée
-function dipslayElementCuisine(uniqueIgredient, className) {
-  return uniqueIgredient
+function dipslayElementCuisine(elements, className) {
+  return elements
     .map((i) => {
       return `
     
@@ -161,93 +237,6 @@ function dipslayElementCuisine(uniqueIgredient, className) {
     })
     .join("");
 }
-
-function ingredientDisplay(search = null) {
-  let uniqueIgredient = [];
-
-  if (search == null) {
-    let ing = [];
-    recipes.map((recipe) => {
-      for (i = 0; i < recipe.ingredients.length; i++) {
-        let ingredient = recipe.ingredients[i].ingredient.toLowerCase();
-        ing.push(ingredient);
-      }
-    });
-
-    uniqueIgredient = [...new Set(ing)];
-
-    uniqueIgredient.splice(30);
-    listIngredient.innerHTML = dipslayElementCuisine(
-      uniqueIgredient,
-      "list-ingredient"
-    );
-  } else {
-    uniqueIgredient = [...new Set(search)];
-    listIngredient.innerHTML = dipslayElementCuisine(
-      uniqueIgredient,
-      "list-ingredient"
-    );
-  }
-  let callback = listTagHandler["list-ingredient"];
-  addTagAppareilEvent("list-ingredient", callback);
-}
-ingredientDisplay();
-
-function appareilDisplay(search = null) {
-  let uniqueAppareil = [];
-
-  if (search == null) {
-    let appareil = [];
-    recipes.map((recipe) => {
-      appareil.push(recipe.appliance.toLowerCase());
-    });
-
-    uniqueAppareil = [...new Set(appareil)];
-
-    listAppareil.innerHTML = dipslayElementCuisine(
-      uniqueAppareil,
-      "list-appareil"
-    );
-  } else {
-    uniqueAppareil = [...new Set(search)];
-    listAppareil.innerHTML = dipslayElementCuisine(
-      uniqueAppareil,
-      "list-appareil"
-    );
-    let callback = listTagHandler["list-appareil"];
-    addTagAppareilEvent("list-appareil", callback);
-  }
-}
-
-appareilDisplay();
-let callback = listTagHandler["list-appareil"];
-addTagAppareilEvent("list-appareil", callback);
-// Affichée les ustensiles dans la fenetre recherche avancé ustensile
-
-function ustensileDisplay(search = null) {
-  let uniqueUstensil = [];
-
-  if (search == null) {
-    let ustensil = [];
-    recipes.map((recipe) => ustensil.push(recipe.ustensils));
-
-    uniqueUstensil = [...new Set(ustensil.flat())];
-
-    listUstensile.innerHTML = dipslayElementCuisine(
-      uniqueUstensil,
-      "list-ustensil"
-    );
-  } else {
-    uniqueUstensil = [...new Set(search)];
-    listUstensile.innerHTML = dipslayElementCuisine(
-      uniqueUstensil,
-      "list-ustensil"
-    );
-  }
-  let callback = listTagHandler["list-ustensil"];
-  addTagAppareilEvent("list-ustensil", callback);
-}
-ustensileDisplay();
 
 function displayRecipeTag(tagChoiceList, tagRecipeCallback, className) {
   let tagRecipeList = tagChoiceList
@@ -278,7 +267,7 @@ inputIngredient.addEventListener("input", (e) => {
   let ing = [];
   let resultInput = e.target.value.toLowerCase();
   if (resultInput.length === 0 || resultInput === "") {
-    ingredientDisplay();
+    displayIngredients();
   }
 
   if (resultInput) {
@@ -287,7 +276,7 @@ inputIngredient.addEventListener("input", (e) => {
       .flat()
       .map((ingredient) => ingredient.ingredient.toLowerCase())
       .filter((ingredient) => ingredient.includes(resultInput));
-    ingredientDisplay(ing);
+    displayIngredients(ing);
   }
 });
 
@@ -295,13 +284,13 @@ inputAppareil.addEventListener("input", (e) => {
   let appareil = [];
   let resultInput = e.target.value.toLowerCase();
   if (resultInput.length === 0 || resultInput === "") {
-    listIngredient.innerHTML = "";
+    listAppareil.innerHTML = "";
   }
   if (resultInput) {
     appareil = recipes
       .map((recipe) => recipe.appliance.toLowerCase())
       .filter((recipe) => recipe.includes(resultInput));
-    appareilDisplay(appareil);
+    diplayAppareils(appareil);
   }
 });
 
@@ -309,7 +298,7 @@ inputUstensile.addEventListener("input", (e) => {
   let ustensil = [];
   let resultInput = e.target.value.toLowerCase();
   if (resultInput.length === 0 || resultInput === "") {
-    listIngredient.innerHTML = "";
+    listUstensile.innerHTML = "";
   }
   if (resultInput) {
     ustensil = recipes
@@ -317,61 +306,25 @@ inputUstensile.addEventListener("input", (e) => {
       .flat()
       .map((ustensils) => ustensils.toLowerCase())
       .filter((ustensil) => ustensil.includes(resultInput));
-    ustensileDisplay(ustensil);
+    displayUstensils(ustensil);
   }
 });
 
 // Apparition des tags de chaque recherche avancée
-let tagChoiceList = [];
-/* listIngredient.addEventListener("click", (e) => {
-  let tagChoice = e.target.textContent;
-  tagChoiceList.push(tagChoice);
-
-  displayRecipeTagIngredient(tagChoiceList);
-
-  tagContainer.innerHTML += `
-
-  
-      <div data-id="${tagChoice}" class="tag">
-        <p data-id="${tagChoice}"  >${tagChoice}</p>
-        <i data-id="${tagChoice}"  class="far fa-times-circle"></i>          
-      </div>   
-      
-
-        
-    `;
-  // remove tag a chaque clic dessus
-  const tag = document.querySelectorAll(".tag");
-
-  tag.forEach((tag) => {
-    tag.addEventListener("click", (e) => {
-      console.log(e);
-      let myIndex = tagChoiceList.indexOf(e.target.dataset.id);
-      if (myIndex !== -1) {
-        tagChoiceList.splice(myIndex, 1);
-      }
-
-      displayRecipeTagIngredient(tagChoiceList);
-
-      tag.style.display = "none";
-    });
-  });
-}); */
-function handleTagClick(e, recipeTagCallback) {
+function handleTagClick(e, className, recipeTagCallback) {
   tagChoice = e.target.textContent;
   tagChoiceList.push(tagChoice);
-  console.log("call");
-  /* tagChoiceList = [...new Set(tagChoiceList)]; */
-  console.log(tagChoiceList);
-  /*  let callback = listTagHandler[className]; */
   recipeTagCallback(tagChoiceList);
-  /*  addTagAppareilEvent(className, callback); */
-
+  let colorClass = {
+    "list-ingredient": "",
+    "list-appareil": "color-one",
+    "list-ustensil": "color-two",
+  }
   tagContainer.innerHTML += `
 
-    <div id="${tagChoice}" class="tag color-one">
-      <p id="${tagChoice}"  >${tagChoice}</p>
-      <i id="${tagChoice}"  class="far fa-times-circle"></i>          
+    <div id="${tagChoice}" class="tag ${colorClass[className]}">
+      <p>${tagChoice}</p>
+      <i  class="far fa-times-circle"></i>          
     </div>           
        
     `;
@@ -379,58 +332,29 @@ function handleTagClick(e, recipeTagCallback) {
   const tag = document.querySelectorAll(".tag");
   tag.forEach((tag) => {
     tag.addEventListener("click", (e) => {
-      let myIndex = tagChoiceList.indexOf(e.target.id);
+      let myIndex = tagChoiceList.indexOf(e.currentTarget.id);
       if (myIndex !== -1) {
         tagChoiceList.splice(myIndex, 1);
       }
-
-      recipeTagCallback(tagChoiceList);
-
-      /* addTagAppareilEvent(className, callback); */
+      // On traite quand la liste des tags devients vide on revient à zero
+      if(tagChoiceList.length == 0) {
+        init()
+      }else{
+        recipeTagCallback(tagChoiceList);
+      }
       tag.style.display = "none";
     });
   });
 }
 
-function addTagAppareilEvent(className, callback) {
+function addTagElementEvent(className, callback) {
   Array.from(document.getElementsByClassName(className)).forEach((element) => {
     element.addEventListener(
       "click",
       (e) => {
-        handleTagClick(e, callback);
+        handleTagClick(e, className, callback);
       },
       [(once = true)]
     );
   });
 }
-/* addTagAppareilEvent("list-ingredient", displayRecipeTagIngredient); */
-
-/* listUstensile.addEventListener("click", (e) => {
-  tagChoice = e.target.textContent;
-  tagChoiceList.push(tagChoice);
-
-  displayRecipeTagUstensil(tagChoiceList);
-  tagContainer.innerHTML += `
-  
-      <div id="${tagChoice}" class="tag color-two">
-        <p id="${tagChoice}"  >${tagChoice}</p>
-        <i id="${tagChoice}"  class="far fa-times-circle"></i>          
-      </div>   
-    `;
-
-  const tag = document.querySelectorAll(".tag");
-  tag.forEach((tag) => {
-    tag.addEventListener("click", (e) => {
-      e.stopPropagation();
-      console.log(e);
-      let myIndex = tagChoiceList.indexOf(e.target.id);
-      if (myIndex !== -1) {
-        tagChoiceList.splice(myIndex, 1);
-      }
-
-      displayRecipeTagUstensil(tagChoiceList);
-      tag.style.display = "none";
-    });
-  });
-});
- */
