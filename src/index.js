@@ -9,114 +9,96 @@ const menuAppareil = document.querySelector(".menu-appareil");
 const menuUstensile = document.querySelector(".menu-ustensile");
 const menus = document.querySelector(".menu");
 
-function filterSearch(recipe, search) {
-  let searchName = recipe.name.toLowerCase().includes(search.toLowerCase());
-  let searchDescription = recipe.description
-    .toLowerCase()
-    .includes(search.toLowerCase());
-
-  let i;
-  recipe.ingredients.map((element) => {
-    searchIngredient = element.ingredient
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    if (searchIngredient) {
-      i = true;
+function filtre(search) {
+  let nouvTab = [];
+  for (let i = 0; i < recipes.length; i++) {
+    if (recipes[i].name.toLowerCase().includes(search.toLowerCase())) {
+      nouvTab.push(recipes[i]);
     }
-  });
-
-  if (i) {
-    return true;
+    if (recipes[i].description.toLowerCase().includes(search.toLowerCase())) {
+      nouvTab.push(recipes[i]);
+    }
+    for (let j = 0; j < recipes[i].ingredients.length; j++) {
+      if (
+        recipes[i].ingredients[j].ingredient
+          .toLowerCase()
+          .includes(search.toLowerCase())
+      ) {
+        nouvTab.push(recipes[i]);
+      }
+    }
   }
-  if (searchName) {
-    return true;
-  }
-  if (searchDescription) {
-    return true;
-  }
-  /* console.log(searchIngredient); */
+  let unique = [...new Set(nouvTab)];
+  return unique;
 }
 
-//Apparition des recettes
-function recipeDisplay(search) {
-  let recipeHtmlElement = recipes
-    .filter((recipe) => filterSearch(recipe, search))
-    .map((recipe) => {
-      let ingredients = [];
+function recipeDisplay(array) {
+  for (let i = 0; i < array.length; i++) {
+    let ingredients = [];
 
-      recipe.ingredients.forEach((ingredient) => {
-        let eachIngredient = ingredient.ingredient;
-        let quantity = ingredient.quantity;
-        let unit = ingredient.unit;
+    for (j = 0; j < array[i].ingredients.length; j++) {
+      let ingredient = array[i].ingredients[j].ingredient;
+      let quantity = array[i].ingredients[j].quantity;
+      let unit = array[i].ingredients[j].unit;
 
-        if (unit == undefined) {
-          unit = "";
-        }
-        if (quantity == undefined) {
-          quantity = "";
-        }
-        ingredients.push(
-          `<li><strong>${eachIngredient}:</strong> ${quantity} ${unit}</li>`
-        );
-      });
+      if (unit == undefined) {
+        unit = "";
+      }
+      if (quantity == undefined) {
+        quantity = "";
+      }
+      ingredients.push(
+        `<li><strong>${ingredient}:</strong> ${quantity} ${unit}</li>`
+      );
+    }
 
-      return `
-            
-            <div class="cards">
-                <section class="recipe"> 
-                    <div class="card-image"></div>
-                    <div class="card-recipe">
-                        <div class="title-recipe">
-                            <h2>${recipe.name}</h2>
-                            <p><i class="far fa-clock"></i>${
-                              recipe.time
-                            } min</p>
-                        </div>
-                    <div class="description-recipe">
-            
-                        <ul>${ingredients.join("")}</ul>
-            
-                        <p class="description">${recipe.description}.</p>
-                    </div>
-                </div>
-                </section>
-            
-            </div>
-            
-            
-            
-            `;
-    });
-  console.log("recipe html :", recipeHtmlElement.length);
-  return recipeHtmlElement;
+    cards.innerHTML += `
+      
+      <div class="cards">
+      <section class="recipe"> 
+      <div class="card-image"></div>
+      <div class="card-recipe">
+      <div class="title-recipe">
+      <h2>${array[i].name}</h2>
+      <p><i class="far fa-clock"></i>${array[i].time} min</p>
+      </div>
+      <div class="description-recipe">
+      
+      <ul>${ingredients.join("")}</ul>
+      
+      <p class="description">${array[i].description}.</p>
+      </div>
+      </div>
+      </section>
+      
+      </div>
+      
+      
+      
+      `;
+  }
 }
 
-// Evenement input principal
 input.addEventListener("input", (e) => {
-  let resultInput = e.target.value;
+  resultInput = e.target.value;
   const tabResult = resultInput.split(" ");
-
   let recipeList = [];
+
   if (resultInput.length > 3) {
     tabResult.forEach((searchInput) => {
       if (searchInput != "") {
-        recipeList.push(recipeDisplay(searchInput));
-        console.log(searchInput);
+        recipeList.push((resultFiltre = filtre(searchInput)));
         handleSearch(searchInput);
       }
     });
-    console.log("recipe list", recipeList.flat().length);
-
-    cards.innerHTML = recipeList.flat().join("");
+    cards.innerHTML = "";
+    recipeDisplay(recipeList.flat());
+    handleSearch(resultInput);
   } else {
     cards.innerHTML = "";
   }
-
   if (recipeList == "" && resultInput.length > 3) {
     cards.innerHTML =
       "Aucune recette ne correspond à vos critères de recherche. Vous pouvez chercher « tarte aux pommes », « poisson », etc.";
-  }
-  if (resultInput == "") {
-    cards.innerHTML = "";
   }
 });

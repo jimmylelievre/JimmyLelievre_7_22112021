@@ -25,41 +25,48 @@ let tagChoiceList = [];
   Cette fonction permet de récupération l'ensemble de des ingredients
 */
 getAllIngredients = () => {
-  let all =  recipes.map((recipe) => recipe.ingredients)
+  let all = recipes
+    .map((recipe) => recipe.ingredients)
     .flat()
-    .map((ingredient) => ingredient.ingredient.toLowerCase());  
+    .map((ingredient) => ingredient.ingredient.toLowerCase());
   return [...new Set(all)];
-}
+};
 /** 
   Cette fonction permet de récupération l'ensemble de des ustensil
 */
 getAllUstensiles = () => {
-  let all =  recipes.map((recipe) => recipe.ustensils)
+  let all = recipes
+    .map((recipe) => recipe.ustensils)
     .flat()
-    .map((ustensil) => ustensil.toLowerCase());  
+    .map((ustensil) => ustensil.toLowerCase());
   return [...new Set(all)];
-}
+};
 
 /** 
   Cette fonction permet de récupération l'ensemble de des appareils
 */
 getAllAppareils = () => {
-  let all = recipes.map((recipe) =>  recipe.appliance.toLowerCase());
+  let all = recipes.map((recipe) => recipe.appliance.toLowerCase());
   return [...new Set(all)];
-}
+};
 /**
  * ------------------------------------------------
- * Cette fonction prend en parametres : 
+ * Cette fonction prend en parametres :
  *   - search : la recherche tapé par l'utilisateur elle null quand on vient d'ouvrir le site
  *   - listContainer : l'element dans laquelle les li généré seront affiché
  *   - className : la classe de l'élement utilisé par exemple list-ingredient
  * ------------------------------------------------
  */
-const getCusineElements = (search = null, listContainer, className, elementCallback) => {
+const getCusineElements = (
+  search = null,
+  listContainer,
+  className,
+  elementCallback
+) => {
   let elements = [];
   let callback = listTagHandler[className];
   if (search == null) {
-    elements = elementCallback()
+    elements = elementCallback();
     elements.splice(30);
   } else {
     elements = [...new Set(search)];
@@ -68,28 +75,64 @@ const getCusineElements = (search = null, listContainer, className, elementCallb
     elements,
     className
   );
-  addTagElementEvent(className, callback);  
-}
+  addTagElementEvent(className, callback);
+};
 /**
  *  Dans ces fonctions on appelle notre fonction getCusineElements
  * A chaque fois on lui donne lui élement pour récuperer ce qu'on veux ingredients, appareils, ustensils
  * Ces 3 fonctions définient ci-après serve de rappels pour ne pas appeler getCusineElements à chaque fois avec la liste longue de ses parametre
- * 
+ *
  */
-const displayIngredients = (search = null) => getCusineElements(search, ".ul-ingredient", "list-ingredient", getAllIngredients);
-const displayAppareils = (search = null) => getCusineElements(search, ".ul-appareil", "list-appareil", getAllAppareils);
-const displayUstensils = (search = null) => getCusineElements(search, ".ul-ustensile","list-ustensil", getAllUstensiles);
+const displayIngredients = (search = null) =>
+  getCusineElements(
+    search,
+    ".ul-ingredient",
+    "list-ingredient",
+    getAllIngredients
+  );
+const displayAppareils = (search = null) =>
+  getCusineElements(search, ".ul-appareil", "list-appareil", getAllAppareils);
+const displayUstensils = (search = null) =>
+  getCusineElements(search, ".ul-ustensile", "list-ustensil", getAllUstensiles);
 
 /**
  * La fonction init est la premiere fonction appeler elle permet d'appeler nos fonction de rappels à l'état initial
- * Elle est aussi appelé après avoir enlevé tous les tags 
+ * Elle est aussi appelé après avoir enlevé tous les tags
  */
 function init() {
-  displayIngredients()
-  displayAppareils()
+  displayIngredients();
+  displayAppareils();
   displayUstensils();
 }
-init()
+init();
+
+function filterSearch(recipe, search) {
+  let searchName = recipe.name.toLowerCase().includes(search.toLowerCase());
+  let searchDescription = recipe.description
+    .toLowerCase()
+    .includes(search.toLowerCase());
+
+  let i;
+  recipe.ingredients.map((element) => {
+    searchIngredient = element.ingredient
+      .toLowerCase()
+      .includes(search.toLowerCase());
+    if (searchIngredient) {
+      i = true;
+    }
+  });
+
+  if (i) {
+    return true;
+  }
+  if (searchName) {
+    return true;
+  }
+  if (searchDescription) {
+    return true;
+  }
+  /* console.log(searchIngredient); */
+}
 
 function handleSearch(search) {
   let searchdata = recipes.filter((recipe) => filterSearch(recipe, search));
@@ -319,7 +362,7 @@ function handleTagClick(e, className, recipeTagCallback) {
     "list-ingredient": "",
     "list-appareil": "color-one",
     "list-ustensil": "color-two",
-  }
+  };
   tagContainer.innerHTML += `
 
     <div id="${tagChoice}" class="tag ${colorClass[className]}">
@@ -337,9 +380,9 @@ function handleTagClick(e, className, recipeTagCallback) {
         tagChoiceList.splice(myIndex, 1);
       }
       // On traite quand la liste des tags devients vide on revient à zero
-      if(tagChoiceList.length == 0) {
-        init()
-      }else{
+      if (tagChoiceList.length == 0) {
+        init();
+      } else {
         recipeTagCallback(tagChoiceList);
       }
       tag.style.display = "none";
