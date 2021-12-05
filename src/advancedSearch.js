@@ -385,6 +385,8 @@ function handleTagClick(e, className, recipeTagCallback) {
       } else {
         recipeTagCallback(tagChoiceList);
       }
+      recipeTagCallback(tagChoiceList);
+
       tag.style.display = "none";
     });
   });
