@@ -96,6 +96,7 @@ input.addEventListener("input", (e) => {
     handleSearch(resultInput);
   } else {
     cards.innerHTML = "";
+    handleSearch(" ");
   }
   if (recipeList == "" && resultInput.length > 3) {
     cards.innerHTML =

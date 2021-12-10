@@ -22,7 +22,7 @@ let tagChoiceList = [];
  */
 
 /** 
-  Cette fonction permet de récupération l'ensemble de des ingredients
+  Cette fonction permet de récupération l'ensemble des ingredients
 */
 getAllIngredients = () => {
   let all = recipes
@@ -32,7 +32,7 @@ getAllIngredients = () => {
   return [...new Set(all)];
 };
 /** 
-  Cette fonction permet de récupération l'ensemble de des ustensil
+  Cette fonction permet de récupération l'ensemble des ustensil
 */
 getAllUstensiles = () => {
   let all = recipes
@@ -43,7 +43,7 @@ getAllUstensiles = () => {
 };
 
 /** 
-  Cette fonction permet de récupération l'ensemble de des appareils
+  Cette fonction permet de récupération l'ensemble des appareils
 */
 getAllAppareils = () => {
   let all = recipes.map((recipe) => recipe.appliance.toLowerCase());
@@ -106,6 +106,7 @@ function init() {
 }
 init();
 
+// Filtre en fonction du nom, de la description et des ingredients present dans les recettes
 function filterSearch(recipe, search) {
   let searchName = recipe.name.toLowerCase().includes(search.toLowerCase());
   let searchDescription = recipe.description
@@ -131,9 +132,9 @@ function filterSearch(recipe, search) {
   if (searchDescription) {
     return true;
   }
-  /* console.log(searchIngredient); */
 }
 
+// Affiche les ingredients, appareils et ustensiles en fonction des recettes presentent apres recherche principale
 function handleSearch(search) {
   let searchdata = recipes.filter((recipe) => filterSearch(recipe, search));
 
@@ -157,6 +158,7 @@ function handleSearch(search) {
   displayUstensils(searchUstensil);
 }
 
+// Affiche les recettes
 function displayRecipes(recipes) {
   let recipeHtmlList = recipes.map((recipe) => {
     let ingredients = [];
