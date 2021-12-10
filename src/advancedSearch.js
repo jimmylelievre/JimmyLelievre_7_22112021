@@ -22,7 +22,7 @@ let tagChoiceList = [];
  */
 
 /** 
-  Cette fonction permet de récupération l'ensemble de des ingredients
+  Cette fonction permet de récupération l'ensemble des ingredients
 */
 getAllIngredients = () => {
   let all = recipes
@@ -32,7 +32,7 @@ getAllIngredients = () => {
   return [...new Set(all)];
 };
 /** 
-  Cette fonction permet de récupération l'ensemble de des ustensil
+  Cette fonction permet de récupération l'ensemble des ustensil
 */
 getAllUstensiles = () => {
   let all = recipes
@@ -43,7 +43,7 @@ getAllUstensiles = () => {
 };
 
 /** 
-  Cette fonction permet de récupération l'ensemble de des appareils
+  Cette fonction permet de récupération l'ensemble des appareils
 */
 getAllAppareils = () => {
   let all = recipes.map((recipe) => recipe.appliance.toLowerCase());
@@ -96,7 +96,7 @@ const displayUstensils = (search = null) =>
   getCusineElements(search, ".ul-ustensile", "list-ustensil", getAllUstensiles);
 
 /**
- * La fonction init est la premiere fonction appeler elle permet d'appeler nos fonction de rappels à l'état initial
+ * La fonction init est la premiere fonction appeler elle permet d'appeler nos fonctions de rappels à l'état initial
  * Elle est aussi appelé après avoir enlevé tous les tags
  */
 function init() {
@@ -106,6 +106,7 @@ function init() {
 }
 init();
 
+// Filtre en fonction de la recherche principale
 function handleSearch(search) {
   let searchdata = recipes.filter((recipe) => filterSearch(recipe, search));
 
@@ -129,6 +130,7 @@ function handleSearch(search) {
   displayUstensils(searchUstensil);
 }
 
+// Affiche les recettes
 function displayRecipes(recipes) {
   let recipeHtmlList = recipes.map((recipe) => {
     let ingredients = [];
@@ -351,7 +353,6 @@ function handleTagClick(e, className, recipeTagCallback) {
       if (myIndex !== -1) {
         tagChoiceList.splice(myIndex, 1);
       }
-      console.log(tagChoiceList);
       // On traite quand la liste des tags devients vide on revient à zero
       if (tagChoiceList.length == 0) {
         init();

@@ -1,10 +1,11 @@
+// DOM
 const tagContainer = document.querySelector(".tag-container");
 const buttonAppareil = document.querySelector(".appareil");
 const buttonUstensile = document.querySelector(".ustensiles");
 const chevronUp = document.querySelectorAll(".fa-chevron-up");
 const buttonIngredient = document.querySelector(".advanced-search ");
 
-// Ouverture  et fermetures des fenetres recherches avancées
+// Ouverture et fermetures des fenetres recherches avancées
 
 buttonIngredient.addEventListener("click", () => {
   inputIngredient.classList.add("with-input");
@@ -33,6 +34,7 @@ buttonUstensile.addEventListener("click", () => {
   buttonUstensile.style.left = "0px";
 });
 
+// Fermeture des boutons search au click sur le chevron up
 chevronUp.forEach((el) => {
   el.addEventListener("click", () => {
     menuIngredient.style.visibility = "hidden";
@@ -44,4 +46,18 @@ chevronUp.forEach((el) => {
     buttonAppareil.style.left = "0px";
     buttonUstensile.style.left = "0px";
   });
+});
+
+// Fermeture des boutons search au click en dehors du bouton
+window.addEventListener("click", (e) => {
+  if (e.target.localName != "div") {
+    menuIngredient.style.visibility = "hidden";
+    menuAppareil.style.visibility = "hidden";
+    menuUstensile.style.visibility = "hidden";
+    buttonIngredient.style.visibility = "visible";
+    buttonUstensile.style.visibility = "visible";
+    buttonAppareil.style.visibility = "visible";
+    buttonAppareil.style.left = "0px";
+    buttonUstensile.style.left = "0px";
+  }
 });

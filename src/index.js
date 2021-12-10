@@ -9,6 +9,7 @@ const menuAppareil = document.querySelector(".menu-appareil");
 const menuUstensile = document.querySelector(".menu-ustensile");
 const menus = document.querySelector(".menu");
 
+// Filtre recette
 function filterSearch(recipe, search) {
   let searchName = recipe.name.toLowerCase().includes(search.toLowerCase());
   let searchDescription = recipe.description
@@ -34,7 +35,6 @@ function filterSearch(recipe, search) {
   if (searchDescription) {
     return true;
   }
-  /* console.log(searchIngredient); */
 }
 
 //Apparition des recettes
@@ -87,7 +87,7 @@ function recipeDisplay(search) {
             
             `;
     });
-  console.log("recipe html :", recipeHtmlElement.length);
+
   return recipeHtmlElement;
 }
 
@@ -101,15 +101,14 @@ input.addEventListener("input", (e) => {
     tabResult.forEach((searchInput) => {
       if (searchInput != "") {
         recipeList.push(recipeDisplay(searchInput));
-        console.log(searchInput);
         handleSearch(searchInput);
       }
     });
-    console.log("recipe list", recipeList.flat().length);
 
     cards.innerHTML = recipeList.flat().join("");
   } else {
     cards.innerHTML = "";
+    handleSearch(" ");
   }
 
   if (recipeList == "" && resultInput.length > 3) {
