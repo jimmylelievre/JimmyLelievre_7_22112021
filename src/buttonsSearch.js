@@ -50,7 +50,7 @@ chevronUp.forEach((el) => {
 
 // Fermeture des boutons search au click en dehors du bouton
 window.addEventListener("click", (e) => {
-  if (e.target.localName != "div") {
+  if (e.target.localName != "div" && e.target.localName != "input") {
     menuIngredient.style.visibility = "hidden";
     menuAppareil.style.visibility = "hidden";
     menuUstensile.style.visibility = "hidden";
