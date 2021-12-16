@@ -247,12 +247,12 @@ input {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin-bottom: 50px;
+  gap: 40px;
 }
 .cards {
   margin-bottom: 20px;
-  flex-grow: 1;
 }
 .recipe {
   width: 380px;
