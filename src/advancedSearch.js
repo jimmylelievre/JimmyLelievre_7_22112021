@@ -301,13 +301,13 @@ inputAppareil.addEventListener("input", (e) => {
   let appareil = [];
   let resultInput = e.target.value.toLowerCase();
   if (resultInput.length === 0 || resultInput === "") {
-    listAppareil.innerHTML = "";
+    displayAppareils();
   }
   if (resultInput) {
     appareil = recipes
       .map((recipe) => recipe.appliance.toLowerCase())
       .filter((recipe) => recipe.includes(resultInput));
-    diplayAppareils(appareil);
+    displayAppareils(appareil);
   }
 });
 
@@ -315,7 +315,7 @@ inputUstensile.addEventListener("input", (e) => {
   let ustensil = [];
   let resultInput = e.target.value.toLowerCase();
   if (resultInput.length === 0 || resultInput === "") {
-    listUstensile.innerHTML = "";
+    displayUstensils();
   }
   if (resultInput) {
     ustensil = recipes
